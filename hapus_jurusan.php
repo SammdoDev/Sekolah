@@ -1,0 +1,30 @@
+<?php
+include "koneksi.php";
+$db = new Database();
+$koneksi = $db->getKoneksi();
+
+if (isset($_GET['kodejurusan'])) {
+    $kodeJurusan = $_GET['kodejurusan'];
+
+    // Hapus jurusan berdasarkan kode
+    $deleteQuery = "DELETE FROM jurusan WHERE kodejurusan = '$kodeJurusan'";
+    if (mysqli_query($koneksi, $deleteQuery)) {
+        // Cek apakah tabel kosong setelah penghapusan
+        $cekQuery = "SELECT COUNT(*) as total FROM jurusan";
+        $cekResult = mysqli_query($koneksi, $cekQuery);
+        $row = mysqli_fetch_assoc($cekResult);
+
+        if ($row['total'] == 0) {
+            // Reset Auto Increment ke 1 jika tabel kosong
+            mysqli_query($koneksi, "ALTER TABLE jurusan AUTO_INCREMENT = 1");
+        }
+
+        header("Location: data_jurusan.php");
+        exit();
+    } else {
+        echo "Gagal menghapus jurusan: " . mysqli_error($koneksi);
+    }
+} else {
+    echo "Kode jurusan tidak diberikan!";
+}
+?>
