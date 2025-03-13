@@ -1,5 +1,6 @@
 <?php
-include "koneksi.php";
+require_once "../index/koneksi.php";
+
 $db = new Database();
 $koneksi = $db->getKoneksi();
 
@@ -19,7 +20,12 @@ if (isset($_GET['kodejurusan'])) {
             mysqli_query($koneksi, "ALTER TABLE jurusan AUTO_INCREMENT = 1");
         }
 
-        header("Location: data_jurusan.php");
+        // Kembali ke halaman sebelumnya
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+        } else {
+            header("Location: ../data/data_jurusan.php"); // Jika referer tidak tersedia, kembali ke daftar jurusan
+        }
         exit();
     } else {
         echo "Gagal menghapus jurusan: " . mysqli_error($koneksi);

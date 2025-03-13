@@ -217,7 +217,7 @@
       <!--end::Container-->
     </nav>
     <!--end::Header-->
-    <?php include 'sidebar.php'; ?>
+    <?php include 'Navbar\sidebar.php'; ?>
     <!--begin::App Main-->
     <main class="app-main">
       <!--begin::App Content Header-->

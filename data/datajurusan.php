@@ -1,10 +1,10 @@
 <?php
-include "koneksi.php";
+include "..\index\koneksi.php";
 $db = new Database();
 $koneksi = $db->getKoneksi();
 
 // Ambil data jurusan
-$queryJurusan = "SELECT * FROM jurusan";
+$queryJurusan = "SELECT kodejurusan, namajurusan FROM jurusan";
 $resultJurusan = mysqli_query($koneksi, $queryJurusan);
 
 // Proses penambahan jurusan
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_jurusan'])) {
     $namaJurusan = trim($_POST['nama_jurusan']);
 
     if (!empty($namaJurusan)) {
-        $insertQuery = "INSERT INTO jurusan (namajurusan) VALUES ('$namaJurusan')";
+        $insertQuery = "INSERT INTO datajurusan (namajurusan) VALUES ('$namaJurusan')";
         if (mysqli_query($koneksi, $insertQuery)) {
             header("Location: " . $_SERVER['PHP_SELF']); // Refresh halaman setelah insert
             exit();
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_jurusan'])) {
         integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI=" crossorigin="anonymous" />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="dist/css/adminlte.css" />
+    <link rel="stylesheet" href="../dist/css/adminlte.css" />
     <!--end::Required Plugin(AdminLTE)-->
 </head>
 <!--end::Head-->
@@ -244,7 +244,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_jurusan'])) {
             <!--end::Container-->
         </nav>
         <!--end::Header-->
-        <?php include 'sidebar.php'; ?>
+        <?php include '../navbar/sidebar.php'; ?>
+
         <!--begin::App Main-->
         <main class="app-main">
             <!--begin::App Content Header-->
@@ -295,13 +296,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_jurusan'])) {
                                                     <tr class="border-b hover:bg-gray-100">
                                                         <td class="p-3"><?= htmlspecialchars($row['kodejurusan']); ?></td>
                                                         <td class="p-3"><?= htmlspecialchars($row['namajurusan']); ?></td>
-                                                        <td class="p-3 text-center">
-                                                            <a href="hapus_jurusan.php?kodejurusan=<?= $row['kodejurusan']; ?>"
+                                                        <td class="p-3 text-center border">
+                                                            <a href="../delete/hapus_jurusan.php?kodejurusan=<?= urlencode($row['kodejurusan']); ?>"
                                                                 onclick="return confirm('Yakin ingin menghapus jurusan ini?');"
-                                                                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                                                                Hapus
+                                                                class="btn btn-danger btn-sm">
+                                                                <i class="bi bi-trash"></i>
                                                             </a>
                                                         </td>
+
+
                                                     </tr>
                                                 <?php endwhile; ?>
                                             </tbody>
@@ -347,7 +350,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_jurusan'])) {
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="dist/js/adminlte.js"></script>
+    <script src="../dist/js/adminlte.js"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
